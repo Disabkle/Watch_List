@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--头部插入消息体-->
+    {% for message in get_flashed_messages() %}
+    <div class="alert">{{ message }}</div>
+    {% endfor %}
+    <!--head块-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ user.name }}'s Watchlist{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    {% block head %}{% endblock %}
+    {% block live2d %}{% endblock %}  
+</head>
+<body>
+<h2>
+    <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/cat.png') }}">
+    {{ user.name }}'s Watchlist
+</h2>
+<!--导航标签-->
+<nav>
+    <ul>
+        <!--定向主页-->
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <!--判断用户状态-->
+        {% if current_user.is_authenticated %}
+        <li><a href="{{ url_for('settings') }}">settings</a></li>
+        <li><a href="{{ url_for('logout') }}">logout</a></li>
+        {% else %}
+        <li><a href="{{ url_for('login') }}">login</a></li>
+        {% endif %}
+        </ul>
+</nav>
+{% block content %}
+{% endblock %}
+<footer>
+{% block footer %}
+{% endblock %}
+<small>&copy; 2018 <a href="#">HelloFlask</a></small>
+</footer>
+</body>
+</html>

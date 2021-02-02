@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}404 error{% endblock %}
+{% block head %}<meta http-equiv="refresh" content="5;url='/'">{% endblock %}
+{% block content %}
+<ul class="movie-list">
+    <li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        Page Not Found - 404   ---It will return in 5 seconds
+        <span class="float-right">
+            <a href="{{ url_for('index') }}">Go Back now</a>
+        </span>
+    </li>
+</ul>
+{% endblock %}

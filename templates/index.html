@@ -1,0 +1,67 @@
+<!--包括基模板-->
+{% extends 'base.html' %}
+
+{% block live2d %}
+<!--font-awesome库-->
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+<!--jQuery库-->
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<!-- 注释掉
+<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+-->
+<script src="{{ url_for('static', filename='js/live2d.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<p>{{ movies|length }} Titles</p>
+
+{% if current_user.is_authenticated %}
+<form method="post">
+    Name <input type="text" name="title" autocomplete="off" required>
+    Year <input type="text" name="year" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="Add">
+</form>
+{% endif %}
+
+<ul class="movie-list">
+    {% for movie in movies %}
+    <li>{{ movie.title }} - {{ movie.year }}
+        <span class="float-right">
+            {% if current_user.is_authenticated %}
+            <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">编辑</a>
+            <form class="inline-form" method="post" action="{{ url_for('delete', movie_id=movie.id) }}">
+                <input class="btn" type="submit" name="delete" value="删除" onclick="return confirm('是否确认删除?')">
+            </form>
+            {% endif %}
+            <a class="douban" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_blank">豆瓣评分</a>
+        </span>
+    </li>        
+    {% endfor %}
+</ul>
+{% if current_user.is_authenticated %}
+<a class="btn" href="{{ url_for('logout') }}">logout</a>
+{% endif %}
+<img alt="moviecat" class="moviecat" src="{{ url_for('static', filename='images/cat2.png') }}" title="ca~ca~cat~">
+<p>{{ movies|length }} Titles</p>
+
+{% endblock %}
+
+{% block footer %}
+<div class="Snow">
+    <canvas class="Snow" id="Snow" width="2160" height="1440" style="display: block; opacity: 1; z-index: 0; position: fixed; top: 0px; left: 0px; transition: opacity 3s ease 0s; pointer-events: none;">
+</div>
+<script src="{{ url_for('static', filename='js/xue.js') }}"></script>
+<div class="fireworks">
+    <canvas id="fireworks" width="1920" height="1080">
+</div>
+<div class="live2d">
+    <canvas id="live2d" width="280" height="350"></canvas>
+</div>
+<script type="text/javascript">
+loadlive2d("live2d","{{ url_for('static',filename='model/haruto/haruto.model.json') }}")
+</script>
+<script src="{{ url_for('static',filename='js/anime.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/fireworks.js') }}"></script>
+
+{% endblock %}
+<!--样式无法更新是浏览器默认加载之前缓存的js/css等-->
